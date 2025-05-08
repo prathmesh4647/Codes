@@ -1,0 +1,30 @@
+<apex:page controller="StudentController">
+    <h1>Student Management</h1>
+
+    <apex:form >
+        <!-- Display any success or error messages -->
+        <apex:pageMessages />
+
+        <!-- Form to add a new student -->
+        <apex:pageBlock title="Create New Student">
+            <apex:pageBlockSection >
+                <apex:inputText label="Student Name" value="{!newStudent.Name}" required="true"/>
+                <apex:inputText label="Age" value="{!newStudent.Age__c}" required="true"/>
+                <apex:inputText label="Grade" value="{!newStudent.Grade__c}" required="true"/>
+            </apex:pageBlockSection>
+            <apex:pageBlockButtons >
+                <!-- Button to save the student -->
+                <apex:commandButton value="Save Student" action="{!saveStudent}" rerender="studentList"/>
+            </apex:pageBlockButtons>
+        </apex:pageBlock>
+        
+        <!-- Display all students -->
+        <apex:pageBlock title="All Students" id="studentList">
+            <apex:pageBlockTable value="{!students}" var="s">
+                <apex:column value="{!s.Name}" headerValue="Student Name"/>
+                <apex:column value="{!s.Age__c}" headerValue="Age"/>
+                <apex:column value="{!s.Grade__c}" headerValue="Grade"/>
+            </apex:pageBlockTable>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

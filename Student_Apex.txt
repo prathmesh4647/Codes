@@ -1,0 +1,47 @@
+public class StudentController {
+    public List<Student__c> students { get; set; }
+    public Student__c newStudent { get; set; }
+
+    // Constructor to load the students and initialize the new student object
+    public StudentController() {
+        // Query to retrieve students, you can change the limit or filter as needed
+        students = [SELECT Id, Name, Age__c, Grade__c FROM Student__c LIMIT 10];
+        newStudent = new Student__c(); // Initialize a new student object
+    }
+
+    // Method to save the new student
+    public PageReference saveStudent() {
+        try {
+            // Insert the new student
+            insert newStudent;
+
+            // Add the new student to the students list after it's inserted
+            students.add(newStudent);
+
+            // Reset the new student object to clear the form
+            newStudent = new Student__c();
+
+            // Optionally, you can redirect or refresh the page after saving
+            return null; // Returning null will stay on the same page, but you could redirect if needed
+        } catch (DmlException e) {
+            // Handle any errors during insert
+            ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.ERROR, 'Error saving student: ' + e.getMessage()));
+            return null;
+        }
+    }
+
+    
+    public PageReference updateStudents() {
+        try {
+            
+            update students;
+
+           
+            ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.INFO, 'Students updated successfully.'));
+            return null; 
+        } catch (DmlException e) {
+            ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.ERROR, 'Error updating students: ' + e.getMessage()));
+            return null;
+        }
+    }
+}
